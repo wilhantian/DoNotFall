@@ -25,6 +25,9 @@ public:
 	/*显示插屏广告*/
 	static void showSpotAds();
 
+	/*检测应用更新*/
+	static void autoUpdate();
+
 };
 
 #endif

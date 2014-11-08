@@ -213,6 +213,23 @@ void ToolBox::showSpotAds()
 #endif
 }
 
+/*检测程序更新*/
+void ToolBox::autoUpdate()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	//函数信息结构体
+	JniMethodInfo minfo;
+	bool isHave = JniHelper::getStaticMethodInfo(minfo,/*JniMethodInfo的引用*/
+												 "org/cocos2dx/cpp/AppActivity",/*类的路径*/
+												 "autoUpdate",/*函数名*/
+												 "()V");/*函数类型简写*/
+	if (isHave)
+	{
+		minfo.env->CallStaticVoidMethod(minfo.classID, minfo.methodID);
+	}
+#endif
+}
+
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 //java通讯
 extern "C"

@@ -2,6 +2,10 @@
 #include "PauseLayer.h"
 #include "FinishLayer.h"
 #include "ToolBox.h"
+//友盟统计
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#include "MobClickCpp.h"
+#endif
 //#include "Block.h"
 #include "SimpleAudioEngine.h"
 
@@ -9,7 +13,7 @@ using namespace CocosDenshion;
 
 USING_NS_CC;
 
-#define MAX_BOX 3
+#define MAX_BOX 26
 
 Scene* GameScene::createScene()
 {
@@ -142,6 +146,11 @@ bool GameScene::init()
 					//todo
 					FinishLayer* finishLayer = FinishLayer::create(highScore);
 					this->addChild(finishLayer, 3);
+					//友盟统计
+					// 通过关卡
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+					umeng::MobClickCpp::finishLevel("_classic_");
+#endif
 				}
 				else
 				{
@@ -236,6 +245,12 @@ bool GameScene::init()
 
 	//加载插屏广告
 	ToolBox::loadSpotAds();
+
+	//友盟统计
+	// 进入关卡.
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	umeng::MobClickCpp::startLevel("_classic_");
+#endif
 
 	return true;
 }

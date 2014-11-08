@@ -10,6 +10,7 @@ public:
 	CREATE_FUNC(HelpScene);
 
 	virtual bool init();
+	void menuNextCallback(Ref* sender);
 };
 
 #endif

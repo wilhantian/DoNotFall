@@ -4,6 +4,8 @@
 #include "ToolBox.h"
 #include "BillBoardScene.h"
 #include "HelpScene.h"
+//友盟统计
+#include "MobClickCpp.h"
 //#include "Block.h"
 USING_NS_CC;
 
@@ -62,10 +64,10 @@ bool HelloWorld::init()
 	//bt_survive->setEnabled(false);
 	menu->addChild(bt_survive);
 
-	//message button
-	MenuItemImage* bt_message = MenuItemImage::create("UI/message.png", "UI/message2.png", "", CC_CALLBACK_1(HelloWorld::menuBillBoardCallback, this));
-	bt_message->setPosition(170, size.height - 880);
-	menu->addChild(bt_message);
+	//rank button
+	MenuItemImage* bt_rank = MenuItemImage::create("UI/rank.png", "UI/rank2.png", "", CC_CALLBACK_1(HelloWorld::menuBillBoardCallback, this));
+	bt_rank->setPosition(170, size.height - 880);
+	menu->addChild(bt_rank);
 	//sound button
 	if (UserDefault::getInstance()->getBoolForKey("sound", true))
 	{
@@ -84,7 +86,7 @@ bool HelloWorld::init()
 	bt_mail->setPosition(390, size.height - 880);
 	menu->addChild(bt_mail);
 	//help button
-	MenuItemImage* bt_help = MenuItemImage::create("UI/help.png", "UI/help2.png", "", CC_CALLBACK_1(HelloWorld::menuSurviveCallback, this));
+	MenuItemImage* bt_help = MenuItemImage::create("UI/help.png", "UI/help2.png", "", CC_CALLBACK_1(HelloWorld::menuHelpCallback, this));
 	bt_help->setPosition(500, size.height - 880);
 	menu->addChild(bt_help);
 
@@ -93,27 +95,37 @@ bool HelloWorld::init()
 	keyEvent->onKeyReleased = [=](EventKeyboard::KeyCode kcode, Event* event){
 		if (kcode == EventKeyboard::KeyCode::KEY_BACK || kcode == EventKeyboard::KeyCode::KEY_BACKSPACE)
 		{
+			//友盟统计
+			umeng::MobClickCpp::end();
 			//结束游戏
 			Director::getInstance()->end();
 		}
 	};
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyEvent, this);
 
+	//友盟检测更新
+	ToolBox::autoUpdate();
+
 	return true;
 }
 
 void HelloWorld::menuClassicCallback(Ref* pSender)
 {
-	Director::getInstance()->replaceScene(GameScene::createScene());
+	Scene* scene = TransitionSlideInL::create(0.15, GameScene::createScene());
+	Director::getInstance()->replaceScene(scene);
 }
 
 void HelloWorld::menuSurviveCallback(Ref* pSender)
 {
 	const char* title = ToolBox::getStringWithJsonFile("messageBox.json", "title", "null");
 	const char* context = ToolBox::getStringWithJsonFile("messageBox.json", "context", "null");
-	//MessageBox(title, context);
+	MessageBox(title, context);
+}
 
-	Director::getInstance()->replaceScene(HelpScene::createScene());
+void HelloWorld::menuHelpCallback(Ref* pSender)
+{
+	Scene* scene = TransitionSlideInL::create(0.15, HelpScene::createScene());
+	Director::getInstance()->replaceScene(scene);
 }
 
 /*公告*/
