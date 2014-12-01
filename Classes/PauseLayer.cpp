@@ -3,10 +3,6 @@
 #include "HelloWorldScene.h"
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
-//友盟统计
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-#include "MobClickCpp.h"
-#endif
 using namespace CocosDenshion;
 
 #define BUTTON_PLAY 0
@@ -119,10 +115,6 @@ void PauseLayer::buttonEvent(Ref* ref)
 		Scene* scene = TransitionSlideInL::create(0.15, HelloWorld::createScene());
 		Director::getInstance()->replaceScene(scene);
 		SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-		//友盟统计
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-		umeng::MobClickCpp::failLevel("_classic_");
-#endif
 	}
 	else if (itemTag == BUTTON_PLAY)
 	{
@@ -132,12 +124,8 @@ void PauseLayer::buttonEvent(Ref* ref)
 	{
 		SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 		//todo
-		Scene* scene = TransitionSlideInR::create(0.15, GameScene::createScene());
+		Scene* scene = TransitionSlideInL::create(0.15, GameScene::createScene());
 		Director::getInstance()->replaceScene(scene);
-		//友盟统计
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-		umeng::MobClickCpp::failLevel("_classic_");
-#endif
 	}
 }
 
